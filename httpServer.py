@@ -335,7 +335,6 @@ def translate_path(path):
     words = path.split('/')
     words = filter(None, words)
     path = args.path.replace('"', "")
-    print(path)
     for word in words:
         drive, word = os.path.splitdrive(word)
         head, word = os.path.split(word)
