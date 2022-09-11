@@ -334,7 +334,8 @@ def translate_path(path):
     path = posixpath.normpath(unquote(path))
     words = path.split('/')
     words = filter(None, words)
-    path = args.path
+    path = args.path.replace('"', "")
+    print(path)
     for word in words:
         drive, word = os.path.splitdrive(word)
         head, word = os.path.split(word)
@@ -383,5 +384,9 @@ if __name__ == '__main__':
                         help='Specify alternate bind address [default: "0.0.0.0"]')
 
     args = parser.parse_args()
+    if os.path.isfile(args.path):
+        raise NotADirectoryError("--path argument should specify a folder path, not a file.")
+    if not os.path.exists(args.path):
+        raise FileExistsError("--path argument path not exists.")
 
     main()
