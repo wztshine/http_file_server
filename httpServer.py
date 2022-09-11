@@ -212,7 +212,11 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
         f = BytesIO()
         display_path = escape(unquote(self.path))
         f.write(b'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">\n<html>\n')
-        f.write(b"<head><title>File Server</title></head>\n")
+        f.write(b'<head>')
+        # 网页自适应手机
+        f.write(b'<meta name="viewport" content="width=device-width,initial-scale=0.7, minimum-scale=0.5, maximum-scale=1.5, user-scalable=no"/>')
+        f.write(b'<title>File Server</title>\n')
+        f.write(b'</head>')
         f.write(b"<body>\n<h2>Current path: %s</h2>\n" % display_path.encode('utf-8'))
         f.write(b"<hr>\n")
         # 上传目录表单
@@ -229,8 +233,8 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
         f.write(b"<hr>\n")
         # 路径文件列表
         f.write(b"<h3>Files Listing</h3>")
-        f.write(b'<table style="width: 80%">')
-        f.write(b'<tr><th style="width: 60%; text-align: left">Path</th>')
+        f.write(b'<table style="width: 100%">')
+        f.write(b'<tr><th style="text-align: left">Path</th>')
         f.write(b'<th style="width: 20%; text-align: left">Size</th>')
         f.write(b'<th style="width: 20%; text-align: left">Modify Time</th>')
         f.write(b"</tr>")
