@@ -212,7 +212,7 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
         f = BytesIO()
         display_path = escape(unquote(self.path))
         f.write(b'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">\n<html>\n')
-        f.write(b"<head><title>Current Path: %s</title></head>\n" % display_path.encode('utf-8'))
+        f.write(b"<head><title>File Server</title></head>\n")
         f.write(b"<body>\n<h2>Current path: %s</h2>\n" % display_path.encode('utf-8'))
         f.write(b"<hr>\n")
         # 上传目录表单
@@ -230,7 +230,7 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
         # 路径文件列表
         f.write(b"<h3>Files Listing</h3>")
         f.write(b'<table style="width: 80%">')
-        f.write(b'<tr style="margin-top: 0px"><th style="width: 60%; text-align: left">Path</th>')
+        f.write(b'<tr><th style="width: 60%; text-align: left">Path</th>')
         f.write(b'<th style="width: 20%; text-align: left">Size</th>')
         f.write(b'<th style="width: 20%; text-align: left">Modify Time</th>')
         f.write(b"</tr>")
@@ -239,7 +239,6 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
             current_url = self.path
             if current_url.endswith('/'):
                 current_url = current_url[:-1]
-                print("after folder:", current_url)
             outer_foler_url = current_url.rsplit('/', 1)[0]
             outer_foler_url = '/' if not outer_foler_url else outer_foler_url
             f.write(
