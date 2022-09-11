@@ -30,6 +30,7 @@ from http.server import BaseHTTPRequestHandler
 
 
 class MyHTTPRequestHandler(BaseHTTPRequestHandler):
+    global args
     def do_GET(self):
         """处理 GET 请求"""
         fd = self.send_head()
@@ -210,8 +211,8 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
 
         f = BytesIO()
         display_path = escape(unquote(self.path))
-        f.write(b'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">')
-        f.write(b"<html>\n<title>Current Path: %s</title>\n" % display_path.encode('utf-8'))
+        f.write(b'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">\n<html>\n')
+        f.write(b"<head><title>Current Path: %s</title></head>\n" % display_path.encode('utf-8'))
         f.write(b"<body>\n<h2>Current path: %s</h2>\n" % display_path.encode('utf-8'))
         f.write(b"<hr>\n")
         # 上传目录表单
@@ -233,6 +234,17 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
         f.write(b'<th style="width: 20%; text-align: left">Size</th>')
         f.write(b'<th style="width: 20%; text-align: left">Modify Time</th>')
         f.write(b"</tr>")
+
+        if self.path != "/":
+            current_url = self.path
+            if current_url.endswith('/'):
+                current_url = current_url[:-1]
+                print("after folder:", current_url)
+            outer_foler_url = current_url.rsplit('/', 1)[0]
+            outer_foler_url = '/' if not outer_foler_url else outer_foler_url
+            f.write(
+                b'<tr style="height: 30px"><td style="background-color: rgb(0,150,0,0.2)"><a href="%s">%s</a></td></tr>' % (
+                    quote(outer_foler_url).encode('utf-8'), "../".encode('utf-8')))
 
         # 根目录下所有的内容
         for name in list_dir:
