@@ -371,8 +371,8 @@ def main():
 
     httpd = HTTPServer(server_address, MyHTTPRequestHandler)
     server = httpd.socket.getsockname()
-    print(f"Serveing HTTP: {server[0]}:{server[1]}")
-    print(f"Host Adress: {get_host_ip()}:{args.port}")
+    print(f"Serveing HTTP on: {server[0]}:{server[1]}")
+    print(f"Local IP Address: {get_host_ip()}:{args.port}")
     httpd.serve_forever()
 
 
