@@ -20,14 +20,12 @@
 
 ```shell
 $ python httpServer.py -h
-usage: httpServer.py [-h] [--path PATH] [--bind ADDRESS] [port]
-
-positional arguments:
-  port                  Specify alternate port [default: 8000]
+usage: httpServer.py [-h] [-p PORT] [--path PATH] [--bind ADDRESS]
 
 options:
   -h, --help            show this help message and exit
-  --path PATH           Specify the folder path
+  -p PORT, --port PORT  Specify alternate port [default: 8000]
+  --path PATH           Specify the folder path to share
   --bind ADDRESS, -b ADDRESS
                         Specify alternate bind address [default: "0.0.0.0"]
 ```
