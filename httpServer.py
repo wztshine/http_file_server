@@ -10,7 +10,6 @@ __all__ = ["MyHTTPRequestHandler"]
 import argparse
 import os
 import posixpath
-import sys
 import time
 
 try:
@@ -24,18 +23,10 @@ import signal
 from io import BytesIO
 import codecs
 
-if sys.version_info.major == 3:
-    # Python3
-    from urllib.parse import quote
-    from urllib.parse import unquote
-    from http.server import HTTPServer
-    from http.server import BaseHTTPRequestHandler
-else:
-    # Python2
-    from urllib import quote
-    from urllib import unquote
-    from BaseHTTPServer import HTTPServer
-    from BaseHTTPServer import BaseHTTPRequestHandler
+from urllib.parse import quote
+from urllib.parse import unquote
+from http.server import ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler
 
 
 class MyHTTPRequestHandler(BaseHTTPRequestHandler):
@@ -130,8 +121,8 @@ class MyHTTPRequestHandler(BaseHTTPRequestHandler):
             while os.path.exists(fn):
                 try:
                     name, suffix = fn.rsplit(".", 1)
-                    fn = name + "_1" + suffix
-                except:
+                    fn = name + "_1" + "." + suffix
+                except ValueError:
                     fn += "_1"
             dirname = os.path.dirname(fn)
             if not os.path.exists(dirname):
@@ -368,7 +359,7 @@ def main():
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
-    httpd = HTTPServer(server_address, MyHTTPRequestHandler)
+    httpd = ThreadingHTTPServer(server_address, MyHTTPRequestHandler)
     server = httpd.socket.getsockname()
     print(f"Serveing HTTP on: {server[0]}:{server[1]}")
     print(f"Local IP Address: {get_host_ip()}:{args.port}")
@@ -377,7 +368,8 @@ def main():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', "--port", action='store', default=8000, type=int, help='Specify alternate port [default: 8000]')
+    parser.add_argument('-p', "--port", action='store', default=8000, type=int,
+                        help='Specify alternate port [default: 8000]')
     parser.add_argument('--path', action='store', default=os.getcwd(), help='Specify the folder path to share')
     parser.add_argument('--bind', '-b', metavar='ADDRESS', default='0.0.0.0',
                         help='Specify alternate bind address [default: "0.0.0.0"]')
