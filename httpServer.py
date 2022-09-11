@@ -377,7 +377,7 @@ def main():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('port', action='store', default=8000, type=int, help='Specify alternate port [default: 8000]')
+    parser.add_argument('-p', "--port", action='store', default=8000, type=int, help='Specify alternate port [default: 8000]')
     parser.add_argument('--path', action='store', default=os.getcwd(), help='Specify the folder path to share')
     parser.add_argument('--bind', '-b', metavar='ADDRESS', default='0.0.0.0',
                         help='Specify alternate bind address [default: "0.0.0.0"]')
